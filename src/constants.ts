@@ -334,7 +334,7 @@ export const DATA = {
         "Curated joyful and shareable pet imagery to align with Pet Dental Health Month",
         "Leveraged high volume UGC to drastically improve brand SEO positioning"
       ],
-      images: ["https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?q=80&w=1200", "https://images.unsplash.com/photo-1534361960057-19889db9621e?q=80&w=1200"],
+      images: ["https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?q=80&w=1024", "https://images.unsplash.com/photo-1534361960057-19889db9621e?q=80&w=1024"],
       link: "https://taggbox.com/blog/taggbox-drives-ugc-for-pedigree-australias-dog-selfie-campaign/"
     },
     {
@@ -355,7 +355,7 @@ export const DATA = {
         "Managed rights cleared UGC pipeline directly feeding eCommerce storefront",
         "Bridged the gap between top of funnel social proof and checkout conversions"
       ],
-      images: ["https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200", "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1200"],
+      images: ["https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1024", "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1024"],
       link: "https://www.instagram.com/yogabar.in/"
     },
     {
@@ -376,7 +376,7 @@ export const DATA = {
         "Developed dermatologist collaboration framework for credibility led content",
         "Deployed automated moderation pipeline for rapid content scaling during growth phase"
       ],
-      images: ["https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1200", "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1200"],
+      images: ["https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1024", "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1024"],
       link: "https://www.instagram.com/beminimalist__/"
     },
     {
@@ -397,7 +397,7 @@ export const DATA = {
         "Orchestrated influencer tier mix strategy aligning nano creators and macro creators",
         "Designed modular content system enabling faster ideation to publish cycles"
       ],
-      images: ["https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=2000"],
+      images: ["https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=1024"],
       link: "https://www.instagram.com/angelone/"
     },
     {

@@ -338,17 +338,29 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
     composer.addPass(UnpremultiplyPass);
 
     const resize = () => {
+      if (!host || !renderer || !composer) return;
       const rect = host.getBoundingClientRect();
       const cssW = Math.max(1, Math.floor(rect.width));
       const cssH = Math.max(1, Math.floor(rect.height));
 
-      const pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+      const gl = renderer.getContext();
+      const maxRenderBufferSize = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE) || 2048;
+      
+      let pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+      
+      // Limit drawing buffer to prevent crashes on high DPI or 4K+ screens
+      if (cssW * pixelRatio > maxRenderBufferSize) {
+        pixelRatio = maxRenderBufferSize / cssW;
+      }
+      if (cssH * pixelRatio > maxRenderBufferSize) {
+        pixelRatio = Math.min(pixelRatio, maxRenderBufferSize / cssH);
+      }
+
       renderer.setPixelRatio(pixelRatio);
       
-      // Absolute cap on texture/buffer size to prevent WebGL out of range errors
-      const MAX_SIZE = 2048; 
-      const finalW = Math.min(cssW, MAX_SIZE);
-      const finalH = Math.min(cssH, MAX_SIZE);
+      // Force integer sizes and clamp to safe bounds
+      const finalW = Math.max(1, Math.floor(Math.min(cssW, 2048)));
+      const finalH = Math.max(1, Math.floor(Math.min(cssH, 2048)));
       
       renderer.setSize(finalW, finalH, false);
       composer.setSize(finalW, finalH);
