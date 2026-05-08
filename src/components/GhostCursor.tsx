@@ -264,7 +264,7 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
       })(THREE.TextureLoader.prototype.load);
 
       renderer = new THREE.WebGLRenderer({
-        antialias: true,
+        antialias: false, // Turned off for performance
         alpha: true,
         depth: false,
         stencil: false,
@@ -359,13 +359,16 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
       const hardLimit = Math.min(maxTex, maxRes, 2048);
       
       const dpr = window.devicePixelRatio || 1;
-      const pixelRatio = Math.min(dpr, 1.5);
+      const pixelRatio = Math.min(dpr, 1.2);
       
       // Calculate desired pixel dimensions
       let wpx = Math.floor(cssW * pixelRatio);
       let hpx = Math.floor(cssH * pixelRatio);
 
-      // Clamp to hard hardware limits
+      // Clamp to hard hardware limits and sanity check
+      if (isNaN(wpx) || wpx <= 0) wpx = 1;
+      if (isNaN(hpx) || hpx <= 0) hpx = 1;
+      
       if (wpx > hardLimit) {
         hpx = Math.floor(hpx * (hardLimit / wpx));
         wpx = hardLimit;

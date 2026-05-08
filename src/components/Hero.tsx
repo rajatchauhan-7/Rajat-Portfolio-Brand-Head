@@ -41,80 +41,154 @@ export const Navbar = () => {
 export const Hero = () => {
   const [isSpeeding, setIsSpeeding] = useState(false);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 1, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center pt-40 pb-24 px-6 overflow-hidden bg-brand-bg">
+      {/* Hyperspeed Background Overlay */}
       <div className="absolute inset-0 z-0">
-        <Suspense fallback={<div className="absolute inset-0 bg-brand-bg" />}>
+        <Suspense fallback={
+          <div className="absolute inset-0 bg-brand-bg flex items-center justify-center">
+            <span className="text-brand-gold font-mono text-xs uppercase tracking-[0.3em] opacity-40 animate-pulse">
+              Loading...
+            </span>
+          </div>
+        }>
           <Hyperspeed 
             effectOptions={{
               ...hyperspeedPresets.one,
-              // PERFORMANCE CAP: This stops the WebGL crash
-              pixelRatio: Math.min(window.devicePixelRatio, 1.2),
-              distortion: 0.2, 
               onSpeedUp: () => setIsSpeeding(true),
               onSlowDown: () => setIsSpeeding(false),
             }} 
           />
         </Suspense>
+        {/* Dark Vignette/Overlay for readability - Responsive to theme */}
         <div className="absolute inset-0 bg-gradient-to-b from-brand-bg via-brand-bg/40 to-brand-bg z-10" />
       </div>
       
       <m.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
         className="relative z-20 text-center max-w-5xl"
       >
-        <p className="text-brand-gold font-bold tracking-[0.6em] mb-8 uppercase text-sm md:text-2xl">
+        <m.p 
+          variants={itemVariants}
+          className="text-brand-gold font-bold tracking-[0.6em] mb-8 uppercase text-sm md:text-2xl"
+        >
           Portfolio
-        </p>
+        </m.p>
 
-        <h1 className="text-4xl sm:text-5xl md:text-[9rem] font-bold text-brand-text leading-[0.8] md:leading-[0.85] tracking-tighter mb-10 uppercase relative">
-          Rajat Singh <br className="hidden md:block" /> 
-          <span className="text-brand-gold italic font-light">Chauhan</span>
-        </h1>
+        <m.h1 
+          variants={itemVariants}
+          className="text-4xl sm:text-5xl md:text-[9rem] font-bold text-brand-text leading-[0.8] md:leading-[0.85] tracking-tighter mb-10 uppercase relative transform-gpu"
+        >
+          <span className="[text-shadow:_0_0_50px_rgba(255,255,255,0.05)]">Rajat Singh</span> <br className="hidden md:block" /> 
+          <span className="text-brand-gold italic font-light [text-shadow:_0_0_30px_rgba(255,184,0,0.3)]">Chauhan</span>
+        </m.h1>
         
-        <p className="text-lg md:text-2xl text-brand-text/60 max-w-4xl mx-auto mb-16 font-light italic leading-relaxed">
+        <m.p 
+          variants={itemVariants}
+          className="text-lg md:text-2xl text-brand-text/60 max-w-4xl mx-auto mb-16 font-light italic leading-relaxed"
+        >
           Head of Brand & Content <span className="mx-3 not-italic opacity-20">·</span> 
           AI Content Ecosystem Strategist <span className="mx-3 not-italic opacity-20">·</span> 
           Creative Lead
-        </p>
+        </m.p>
 
-        <div className="relative inline-block mb-12">
+        <m.div 
+          variants={itemVariants}
+          className="relative inline-block mb-12"
+        >
           <div className="w-56 h-56 md:w-80 md:h-80 rounded-full border-2 border-brand-gold/20 p-4 relative group cursor-pointer transition-all duration-700 hover:border-brand-gold/50">
             <div className="w-full h-full rounded-full overflow-hidden border border-brand-accent/20 relative z-10">
               <img 
                 src="https://i.postimg.cc/yYbHBQL3/IMG-4248.jpg" 
-                alt="Rajat Singh Chauhan" 
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+                alt={DATA.name} 
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-out"
               />
             </div>
+            
+            {/* Pulsing Outer Glow on Hover */}
             <div className="absolute inset-0 rounded-full bg-brand-gold/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
+
+            <m.div 
+              animate={{ rotate: 360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              className="absolute -inset-1 border-t-2 border-brand-gold/30 rounded-full"
+            />
           </div>
-        </div>
+        </m.div>
         
-        <div className="flex flex-wrap justify-center gap-6">
-          <button 
+        <m.div variants={itemVariants} className="flex flex-wrap justify-center gap-6">
+          <m.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
             className="btn-premium flex items-center gap-3"
           >
             Explore Impact <ArrowUpRight size={16} />
-          </button>
-        </div>
+          </m.button>
+          <m.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="btn-outline border-white/10 text-brand-text hover:bg-white/5"
+          >
+            Initiate Contact
+          </m.button>
+        </m.div>
       </m.div>
 
-      <div className="relative z-20 flex flex-nowrap items-center justify-between gap-6 md:gap-16 mt-20 md:mt-24 w-full max-w-7xl px-8 overflow-x-auto no-scrollbar">
+      <m.div 
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.5, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-20 flex flex-nowrap items-center justify-between gap-6 md:gap-16 mt-20 md:mt-24 w-full max-w-7xl px-8 overflow-x-auto no-scrollbar"
+      >
         {DATA.stats.map((stat, i) => (
-          <div key={stat.label} className="text-center group cursor-default">
-            <div className="text-4xl md:text-7xl font-bold text-brand-text mb-3 leading-none tracking-tighter">
-              {stat.value}
+          <m.div
+            key={stat.label}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ y: -10, scale: 1.1 }}
+            transition={{ 
+              initial: { delay: 1.8 + (i * 0.1), duration: 0.8 },
+              whileHover: { duration: 0.3, ease: "easeOut" }
+            }}
+            className="text-center group relative cursor-default"
+          >
+            <div className="relative">
+              <div className="text-4xl md:text-7xl font-bold text-brand-text mb-3 leading-none tracking-tighter group-hover:text-brand-gold transition-colors duration-500">
+                {stat.value}
+              </div>
+              {/* Subtle Glow behind the value */}
+              <div className="absolute inset-0 bg-brand-gold/5 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
             </div>
-            <div className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-brand-gold font-black opacity-40 group-hover:opacity-100 transition-opacity duration-500">
+            <div className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-brand-gold font-black opacity-40 group-hover:opacity-100 transition-opacity duration-500 whitespace-nowrap">
               {stat.label}
             </div>
-          </div>
+          </m.div>
         ))}
-      </div>
+      </m.div>
     </section>
   );
 };

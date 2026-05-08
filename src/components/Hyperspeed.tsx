@@ -109,32 +109,9 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
 
     let renderer: THREE.WebGLRenderer;
     try {
-      // Protection against large textures
-      THREE.TextureLoader.prototype.load = (function(originalLoad) {
-        return function(this: THREE.TextureLoader, url: string, onLoad, onProgress, onError) {
-          let optimizedUrl = url;
-          if (typeof url === 'string' && url.includes('unsplash.com')) {
-            if (!url.includes('w=')) {
-              optimizedUrl += (url.includes('?') ? '&' : '?') + 'w=1024&q=80';
-            } else {
-              optimizedUrl = url.replace(/w=\d+/, 'w=1024');
-            }
-          }
-          
-          const wrappedOnLoad = (texture: any) => {
-            texture.minFilter = THREE.LinearFilter;
-            texture.magFilter = THREE.LinearFilter;
-            texture.generateMipmaps = false;
-            if (onLoad) onLoad(texture);
-          };
-
-          return originalLoad.call(this, optimizedUrl, wrappedOnLoad, onProgress, onError);
-        };
-      })(THREE.TextureLoader.prototype.load);
-
       renderer = new THREE.WebGLRenderer({ 
         canvas: canvasRef.current,
-        antialias: true,
+        antialias: false, // Turned off for better performance
         alpha: true,
         powerPreference: "high-performance",
       });
@@ -165,13 +142,16 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
       const hardLimit = Math.min(maxTex, maxRes, 2048);
       
       const dpr = window.devicePixelRatio || 1;
-      const pixelRatio = Math.min(dpr, 1.5);
+      const pixelRatio = Math.min(dpr, 1.2);
       
       // Calculate desired pixel dimensions
       let wpx = Math.floor(width * pixelRatio);
       let hpx = Math.floor(height * pixelRatio);
 
-      // Clamp to hard hardware limits
+      // Clamp to hard hardware limits and sanity check
+      if (isNaN(wpx) || wpx <= 0) wpx = 1;
+      if (isNaN(hpx) || hpx <= 0) hpx = 1;
+      
       if (wpx > hardLimit) {
         hpx = Math.floor(hpx * (hardLimit / wpx));
         wpx = hardLimit;
@@ -195,7 +175,7 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
     window.addEventListener('resize', resize);
     resize();
 
-    const count = 1200;
+    const count = 600;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(count * 3 * 2);
     const lineColors = new Float32Array(count * 3 * 2);
