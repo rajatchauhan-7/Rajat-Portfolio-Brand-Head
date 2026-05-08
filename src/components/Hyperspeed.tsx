@@ -109,6 +109,29 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
 
     let renderer: THREE.WebGLRenderer;
     try {
+      // Protection against large textures
+      THREE.TextureLoader.prototype.load = (function(originalLoad) {
+        return function(this: THREE.TextureLoader, url: string, onLoad, onProgress, onError) {
+          let optimizedUrl = url;
+          if (typeof url === 'string' && url.includes('unsplash.com')) {
+            if (!url.includes('w=')) {
+              optimizedUrl += (url.includes('?') ? '&' : '?') + 'w=1024&q=80';
+            } else {
+              optimizedUrl = url.replace(/w=\d+/, 'w=1024');
+            }
+          }
+          
+          const wrappedOnLoad = (texture: any) => {
+            texture.minFilter = THREE.LinearFilter;
+            texture.magFilter = THREE.LinearFilter;
+            texture.generateMipmaps = false;
+            if (onLoad) onLoad(texture);
+          };
+
+          return originalLoad.call(this, optimizedUrl, wrappedOnLoad, onProgress, onError);
+        };
+      })(THREE.TextureLoader.prototype.load);
+
       renderer = new THREE.WebGLRenderer({ 
         canvas: canvasRef.current,
         antialias: true,
@@ -137,24 +160,35 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
       if (width <= 0 || height <= 0) return;
 
       const gl = renderer.getContext();
+      const maxTex = gl.getParameter(gl.MAX_TEXTURE_SIZE) || 2048;
       const maxRes = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE) || 2048;
+      const hardLimit = Math.min(maxTex, maxRes, 2048);
       
-      const finalW = Math.max(1, Math.floor(Math.min(width, 2048)));
-      const finalH = Math.max(1, Math.floor(Math.min(height, 2048)));
-
-      let pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+      const dpr = window.devicePixelRatio || 1;
+      const pixelRatio = Math.min(dpr, 1.5);
       
-      // Maintain drawing buffer size within hardware limits
-      if (finalW * pixelRatio > maxRes) {
-        pixelRatio = maxRes / finalW;
+      // Calculate desired pixel dimensions
+      let wpx = Math.floor(width * pixelRatio);
+      let hpx = Math.floor(height * pixelRatio);
+
+      // Clamp to hard hardware limits
+      if (wpx > hardLimit) {
+        hpx = Math.floor(hpx * (hardLimit / wpx));
+        wpx = hardLimit;
       }
-      if (finalH * pixelRatio > maxRes) {
-        pixelRatio = Math.min(pixelRatio, maxRes / finalH);
+      if (hpx > hardLimit) {
+        wpx = Math.floor(wpx * (hardLimit / hpx));
+        hpx = hardLimit;
       }
 
-      renderer.setPixelRatio(pixelRatio);
-      renderer.setSize(finalW, finalH, false);
-      camera.aspect = finalW / finalH;
+      // Final safety check: at least 1px
+      wpx = Math.max(1, wpx);
+      hpx = Math.max(1, hpx);
+
+      // Set explicit sizes without Three.js internal DPR scaling
+      renderer.setPixelRatio(1);
+      renderer.setSize(wpx, hpx, false);
+      camera.aspect = wpx / hpx;
       camera.updateProjectionMatrix();
     };
 

@@ -240,7 +240,7 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
 
     let renderer: THREE.WebGLRenderer;
     try {
-      // Protection against large textures as requested
+      // Protection against large textures and memory bloat
       THREE.TextureLoader.prototype.load = (function(originalLoad) {
         return function(this: THREE.TextureLoader, url: string, onLoad, onProgress, onError) {
           let optimizedUrl = url;
@@ -251,7 +251,15 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
               optimizedUrl = url.replace(/w=\d+/, 'w=1024');
             }
           }
-          return originalLoad.call(this, optimizedUrl, onLoad, onProgress, onError);
+          
+          const wrappedOnLoad = (texture: any) => {
+            texture.minFilter = THREE.LinearFilter;
+            texture.magFilter = THREE.LinearFilter;
+            texture.generateMipmaps = false;
+            if (onLoad) onLoad(texture);
+          };
+
+          return originalLoad.call(this, optimizedUrl, wrappedOnLoad, onProgress, onError);
         };
       })(THREE.TextureLoader.prototype.load);
 
@@ -339,33 +347,41 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
 
     const resize = () => {
       if (!host || !renderer || !composer) return;
+      
       const rect = host.getBoundingClientRect();
-      const cssW = Math.max(1, Math.floor(rect.width));
-      const cssH = Math.max(1, Math.floor(rect.height));
+      const cssW = rect.width;
+      const cssH = rect.height;
+      if (cssW <= 0 || cssH <= 0) return;
 
       const gl = renderer.getContext();
+      const maxTex = gl.getParameter(gl.MAX_TEXTURE_SIZE) || 2048;
       const maxRes = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE) || 2048;
+      const hardLimit = Math.min(maxTex, maxRes, 2048);
       
-      // We want to stay UNDER maxRes in total pixels
-      const finalW = Math.min(cssW, 2048);
-      const finalH = Math.min(cssH, 2048);
+      const dpr = window.devicePixelRatio || 1;
+      const pixelRatio = Math.min(dpr, 1.5);
       
-      let pixelRatio = Math.min(window.devicePixelRatio, 1.5);
-      
-      // Ensure drawing buffer (finalW * pixelRatio) doesn't exceed hardware limits
-      if (finalW * pixelRatio > maxRes) {
-        pixelRatio = maxRes / finalW;
+      // Calculate desired pixel dimensions
+      let wpx = Math.floor(cssW * pixelRatio);
+      let hpx = Math.floor(cssH * pixelRatio);
+
+      // Clamp to hard hardware limits
+      if (wpx > hardLimit) {
+        hpx = Math.floor(hpx * (hardLimit / wpx));
+        wpx = hardLimit;
       }
-      if (finalH * pixelRatio > maxRes) {
-        pixelRatio = Math.min(pixelRatio, maxRes / finalH);
+      if (hpx > hardLimit) {
+        wpx = Math.floor(wpx * (hardLimit / hpx));
+        hpx = hardLimit;
       }
 
-      renderer.setPixelRatio(pixelRatio);
-      renderer.setSize(finalW, finalH, false);
-      
-      // Use pixel dimensions for composer
-      const wpx = Math.floor(finalW * pixelRatio);
-      const hpx = Math.floor(finalH * pixelRatio);
+      // Final safety check: at least 1px
+      wpx = Math.max(1, wpx);
+      hpx = Math.max(1, hpx);
+
+      // Set explicit sizes without Three.js internal DPR scaling
+      renderer.setPixelRatio(1);
+      renderer.setSize(wpx, hpx, false);
       composer.setSize(wpx, hpx);
       
       if (materialRef.current) {
