@@ -166,7 +166,7 @@ export const DATA = {
         "Deployed highly curated digital social proof walls directly onto property landing pages",
         "Turned satisfied visitors into powerful brand advocates driving organic booking flow"
       ],
-      images: ["https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200", "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200"],
+      images: ["https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1024", "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1024"],
       link: "https://taggbox.com/blog/the-leela-ugc-case-study/"
     },
     {
@@ -187,7 +187,7 @@ export const DATA = {
         "Built segmented social feeds for both professional artist showcases and general community content",
         "Aggregated real time content across Instagram, Twitter, Facebook, and YouTube"
       ],
-      images: ["https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200", "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200"],
+      images: ["https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1024", "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1024"],
       link: "https://taggbox.com/blog/warner-bros-used-taggbox-drive-ugc-mortal-kombat-11-game/"
     },
     {
@@ -208,7 +208,7 @@ export const DATA = {
         "Leveraged community beauty tutorials and product showcases over static studio images",
         "Reduced purchase friction by connecting UGC directly to the shopping cart"
       ],
-      images: ["https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200", "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=1200"],
+      images: ["https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1024", "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=1024"],
       link: "https://taggbox.com/case-study/starstruck-cosmetics/"
     },
     {
@@ -229,7 +229,7 @@ export const DATA = {
         "Utilized real world customer styling to build immense brand trust vs standard modeling",
         "Streamlined path to purchase to under three clicks from discovery to cart"
       ],
-      images: ["https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2000"],
+      images: ["https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1024"],
       link: "https://taggbox.com/case-study/malandra/"
     },
     {
@@ -250,7 +250,7 @@ export const DATA = {
         "Drove organic traffic directly to the talent identification program",
         "Enabled easy cross pollination of content to maximize visibility for athletes"
       ],
-      images: ["https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=2000"],
+      images: ["https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1024"],
       link: "https://taggbox.com/case-study/"
     },
     {
@@ -271,7 +271,7 @@ export const DATA = {
         "Deployed dynamic content blocks that radically amplified audience dwell time",
         "Validated B2B tech claims via authentic and peer to peer social proof"
       ],
-      images: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200", "https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=1200"],
+      images: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1024", "https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=1024"],
       link: "https://taggbox.com/case-study/bose-professional/"
     },
     {
@@ -292,7 +292,7 @@ export const DATA = {
         "Converted passive tourists into active content creators for the destination board",
         "Displayed live localized feeds to drive immediate booking and travel intent"
       ],
-      images: ["https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200", "https://images.unsplash.com/photo-1472396961693-142e6e269027?q=80&w=1200"],
+      images: ["https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1024", "https://images.unsplash.com/photo-1472396961693-142e6e269027?q=80&w=1024"],
       link: "https://taggbox.com/blog/schiermonnikoog-travel-ugc/"
     },
     {
@@ -313,7 +313,7 @@ export const DATA = {
         "Filtered high volume tweet velocity directly into a branded and supportive portal",
         "Increased visibility and interaction metrics for associated charitable awareness"
       ],
-      images: ["https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1200", "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=1200"],
+      images: ["https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1024", "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=1024"],
       link: "https://taggbox.com/blog/impactful-hashtag-campaign-by-isolated-talks/"
     },
     {

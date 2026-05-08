@@ -240,6 +240,21 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
 
     let renderer: THREE.WebGLRenderer;
     try {
+      // Protection against large textures as requested
+      THREE.TextureLoader.prototype.load = (function(originalLoad) {
+        return function(this: THREE.TextureLoader, url: string, onLoad, onProgress, onError) {
+          let optimizedUrl = url;
+          if (typeof url === 'string' && url.includes('unsplash.com')) {
+            if (!url.includes('w=')) {
+              optimizedUrl += (url.includes('?') ? '&' : '?') + 'w=1024&q=80';
+            } else {
+              optimizedUrl = url.replace(/w=\d+/, 'w=1024');
+            }
+          }
+          return originalLoad.call(this, optimizedUrl, onLoad, onProgress, onError);
+        };
+      })(THREE.TextureLoader.prototype.load);
+
       renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
@@ -329,11 +344,17 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
 
       const pixelRatio = Math.min(window.devicePixelRatio, 1.5);
       renderer.setPixelRatio(pixelRatio);
-      renderer.setSize(cssW, cssH, false);
-      composer.setSize(cssW, cssH);
+      
+      // Absolute cap on texture/buffer size to prevent WebGL out of range errors
+      const MAX_SIZE = 2048; 
+      const finalW = Math.min(cssW, MAX_SIZE);
+      const finalH = Math.min(cssH, MAX_SIZE);
+      
+      renderer.setSize(finalW, finalH, false);
+      composer.setSize(finalW, finalH);
 
-      const wpx = Math.max(1, Math.floor(cssW * pixelRatio));
-      const hpx = Math.max(1, Math.floor(cssH * pixelRatio));
+      const wpx = Math.max(1, Math.floor(finalW * pixelRatio));
+      const hpx = Math.max(1, Math.floor(finalH * pixelRatio));
       
       material.uniforms.iResolution.value.set(wpx, hpx, 1);
       material.uniforms.iScale.value = calculateScale(host);

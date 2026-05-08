@@ -115,7 +115,6 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
         alpha: true,
         powerPreference: "high-performance",
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       renderer.setClearColor(0x000000, 0);
     } catch (e) {
       console.error("WebGL initialization failed:", e);
@@ -134,8 +133,17 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
       if (!containerRef.current) return;
       const width = containerRef.current.clientWidth;
       const height = containerRef.current.clientHeight;
-      renderer.setSize(width, height);
-      camera.aspect = width / height;
+      
+      const pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+      renderer.setPixelRatio(pixelRatio);
+
+      // Absolute cap on texture/buffer size
+      const MAX_SIZE = 2048; 
+      const finalW = Math.min(width, MAX_SIZE);
+      const finalH = Math.min(height, MAX_SIZE);
+
+      renderer.setSize(finalW, finalH);
+      camera.aspect = finalW / finalH;
       camera.updateProjectionMatrix();
     };
 

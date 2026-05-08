@@ -57,7 +57,7 @@ export const AICreativeLab = () => {
                className="aspect-[16/9] lg:aspect-video rounded-[3rem] overflow-hidden border border-white/10 shadow-3xl group relative cursor-pointer"
              >
                 <img 
-                  src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2000" 
+                  src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1024" 
                   alt="AI Workflow"
                   loading="lazy"
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"

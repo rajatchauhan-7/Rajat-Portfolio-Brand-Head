@@ -70,7 +70,7 @@ export const MethodologySection = () => {
             className="aspect-square rounded-[4rem] overflow-hidden border border-white/10 shadow-3xl grayscale hover:grayscale-0 transition-all duration-1000 group relative"
           >
              <img 
-               src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200" 
+               src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1024" 
                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                alt="Creative Workspace"
              />
