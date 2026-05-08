@@ -239,11 +239,11 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
     if (!parent) return;
 
     const renderer = new THREE.WebGLRenderer({
-      antialias: !isTouch,
+      antialias: true,
       alpha: true,
       depth: false,
       stencil: false,
-      powerPreference: 'default',
+      powerPreference: 'high-performance',
       premultipliedAlpha: false,
       preserveDrawingBuffer: false
     });
@@ -315,15 +315,7 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
       const cssW = Math.max(1, Math.floor(rect.width));
       const cssH = Math.max(1, Math.floor(rect.height));
 
-      const currentDPR = Math.min(
-        typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
-        maxDevicePixelRatio
-      );
-
-      const need = cssW * cssH * currentDPR * currentDPR;
-      const scale = need <= pixelBudget ? 1 : Math.max(0.5, Math.min(1, Math.sqrt(pixelBudget / Math.max(1, need))));
-      
-      const pixelRatio = currentDPR * scale;
+      const pixelRatio = Math.min(window.devicePixelRatio, 2);
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(cssW, cssH, false);
       composer.setSize(cssW, cssH);
@@ -341,10 +333,33 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
     resizeObsRef.current = ro;
     ro.observe(host);
 
+    let isVisible = true;
+    const io = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) ensureLoop();
+    }, { threshold: 0 });
+    io.observe(host);
+
     const start = performance.now();
 
+    let lastFrameTime = 0;
     const animate = () => {
+      if (!isVisible) {
+        runningRef.current = false;
+        rafRef.current = null;
+        return;
+      }
+
       const now = performance.now();
+      
+      // Throttle to 60fps (16.7ms per frame)
+      const deltaTime = now - lastFrameTime;
+      if (deltaTime < 16) {
+        rafRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastFrameTime = now;
+
       const t = (now - start) / 1000;
       
       const mat = materialRef.current!;
@@ -444,6 +459,7 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
       target.removeEventListener('pointerleave', onPointerLeave);
       
       resizeObsRef.current?.disconnect();
+      io.disconnect();
       
       scene.clear();
       geom.dispose();

@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { DATA } from '../constants';
 import { Clock, ChevronRight } from 'lucide-react';
 
@@ -20,7 +20,7 @@ export const BlogSection = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
           {DATA.blogPosts.map((post, i) => (
-            <motion.article
+            <m.article
               key={post.id}
               initial={{ opacity: 0, y: 30 }}
               whileHover={{ scale: 1.03 }}
@@ -46,7 +46,7 @@ export const BlogSection = () => {
                 <span className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">{post.date}</span>
                 <ChevronRight size={16} className="text-brand-gold group-hover:translate-x-2 transition-transform" />
               </div>
-            </motion.article>
+            </m.article>
           ))}
         </div>
       </div>

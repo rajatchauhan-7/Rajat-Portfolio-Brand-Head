@@ -1,5 +1,5 @@
 import { Linkedin, Mail, ArrowUp } from 'lucide-react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 
 export const Footer = () => {
   const scrollToTop = () => {
@@ -43,14 +43,14 @@ export const Footer = () => {
             © 2026 Rajat Singh Chauhan. Crafted with AI Precision.
           </div>
           
-          <motion.button 
+          <m.button 
             onClick={scrollToTop}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white transition-all"
           >
             <ArrowUp size={20} />
-          </motion.button>
+          </m.button>
 
           <div className="flex gap-6">
             <a href="https://www.linkedin.com/in/rajat-singh-chauhan-9298201b4/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-white transition-colors"><Linkedin size={18} /></a>

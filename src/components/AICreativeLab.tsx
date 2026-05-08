@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'motion/react';
+import { m, useScroll, useTransform, useSpring } from 'motion/react';
 import { DATA } from '../constants';
 import { useRef } from 'react';
 
@@ -9,7 +9,13 @@ export const AICreativeLab = () => {
     offset: ["start end", "end start"]
   });
 
-  const xTranslate = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
+  const smoothScrollYProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const xTranslate = useTransform(smoothScrollYProgress, [0, 1], ["0%", "-30%"]);
 
   return (
     <section id="ai-engine" ref={scrollRef} className="py-24 lg:py-40 border-y border-white/5 relative overflow-hidden bg-brand-surface/40">
@@ -20,7 +26,7 @@ export const AICreativeLab = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 items-center mb-24">
           <div className="lg:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
-             <motion.div
+             <m.div
                initial={{ opacity: 0, x: -50 }}
                whileInView={{ opacity: 1, x: 0 }}
                viewport={{ once: true }}
@@ -37,8 +43,8 @@ export const AICreativeLab = () => {
                <p className="text-xl text-brand-text/50 font-light leading-relaxed max-w-xl italic">
                  {DATA.aiPipeline.subtitle}
                </p>
-             </motion.div>
-             <motion.div 
+             </m.div>
+             <m.div 
                initial={{ opacity: 0, scale: 0.9 }}
                whileInView={{ opacity: 1, scale: 1 }}
                whileHover={{ scale: 1.02 }}
@@ -57,14 +63,14 @@ export const AICreativeLab = () => {
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
-             </motion.div>
+             </m.div>
           </div>
         </div>
       </div>
 
       {/* Horizon-Style Pipeline Steps Slider */}
       <div className="relative w-full overflow-hidden mb-24">
-        <motion.div 
+        <m.div 
           animate={{
             x: [0, "-50%"],
           }}
@@ -80,7 +86,7 @@ export const AICreativeLab = () => {
           style={{ width: "max-content" }}
         >
           {[...DATA.aiPipeline.steps, ...DATA.aiPipeline.steps].map((step, i) => (
-            <motion.div
+            <m.div
               key={`${step.id}-${i}`}
               whileHover={{ scale: 1.02 }}
               className="inline-block w-[320px] md:w-[450px] p-10 lg:p-14 bg-brand-surface border border-white/5 rounded-[3rem] group relative overflow-hidden backdrop-blur-xl whitespace-normal shrink-0"
@@ -100,7 +106,7 @@ export const AICreativeLab = () => {
                 
                 <div className="pt-8">
                   <div className="h-0.5 w-full bg-white/5 rounded-full overflow-hidden">
-                    <motion.div 
+                    <m.div 
                       initial={{ width: 0 }}
                       whileInView={{ width: '100%' }}
                       viewport={{ once: true }}
@@ -110,9 +116,9 @@ export const AICreativeLab = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
 
         {/* Side Fades */}
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-brand-bg to-transparent z-20 pointer-events-none" />
@@ -121,7 +127,7 @@ export const AICreativeLab = () => {
 
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-center">
-          <motion.div 
+          <m.div 
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="w-full md:max-w-3xl flex flex-col md:flex-row items-center gap-10 md:gap-16 p-12 md:p-16 bg-brand-gold/[0.03] border border-brand-gold/10 rounded-[4rem] backdrop-blur-3xl relative overflow-hidden group cursor-pointer"
@@ -144,7 +150,7 @@ export const AICreativeLab = () => {
 
              {/* Bottom Progress Bar Decoration */}
              <div className="absolute bottom-0 left-0 w-full h-1 bg-brand-gold/5">
-                <motion.div 
+                <m.div 
                   initial={{ width: 0 }}
                   whileInView={{ width: '40%' }}
                   viewport={{ once: true }}
@@ -152,7 +158,7 @@ export const AICreativeLab = () => {
                   className="h-full bg-brand-gold/40"
                 />
              </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

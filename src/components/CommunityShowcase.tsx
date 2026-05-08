@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { DATA } from '../constants';
 import { Users, Zap, ChevronRight, Share2 } from 'lucide-react';
 
@@ -6,7 +6,7 @@ export const CommunityShowcase = () => {
   return (
     <section id="laboratory" className="py-20 lg:py-40 px-6 max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-12">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -20,12 +20,12 @@ export const CommunityShowcase = () => {
           <p className="text-xl text-gray-500 font-light leading-relaxed">
             I don't just architect systems; I build communities fueled by genuine interest. From cinema to niche subcultures, I have engineered loyal spaces from scratch, proving that with the right narrative framework, scaling an organic presence is a predictable science.
           </p>
-        </motion.div>
+        </m.div>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-12">
         {DATA.communities.map((item, i) => (
-          <motion.div
+          <m.div
             key={item.name}
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -90,7 +90,7 @@ export const CommunityShowcase = () => {
                 </button>
               )}
             </div>
-          </motion.div>
+          </m.div>
         ))}
       </div>
     </section>

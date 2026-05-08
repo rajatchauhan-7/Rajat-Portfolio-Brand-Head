@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { DATA } from '../constants';
 import { Search, PenTool, Zap, BarChart3 } from 'lucide-react';
 
@@ -18,7 +18,7 @@ export const ProcessSection = () => {
         {DATA.process?.map((step, i) => {
           const Icon = icons[i];
           return (
-            <motion.div
+            <m.div
               key={step.phase}
               initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -46,7 +46,7 @@ export const ProcessSection = () => {
                   <p className="text-sm text-white font-medium">{step.deliverable}</p>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           );
         })}
       </div>

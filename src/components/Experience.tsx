@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { DATA } from '../constants';
 import { ExternalLink, Briefcase, Users, Calendar } from 'lucide-react';
 
@@ -6,7 +6,7 @@ export const ExperienceSection = () => {
   return (
     <section id="experience" className="py-20 lg:py-40 px-6 max-w-7xl mx-auto overflow-hidden">
       <div className="flex flex-col md:flex-row justify-between items-end gap-12 mb-24 lg:mb-32">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -18,12 +18,12 @@ export const ExperienceSection = () => {
           <p className="text-xl text-gray-500 font-light leading-relaxed">
             Navigating the evolution of digital brand building for nearly a decade.
           </p>
-        </motion.div>
+        </m.div>
       </div>
 
       <div className="space-y-6">
         {DATA.experiences.map((exp, i) => (
-          <motion.div
+          <m.div
             key={exp.id}
             initial={{ opacity: 0, y: 50 }}
             whileHover={{ scale: 1.01 }}
@@ -68,7 +68,7 @@ export const ExperienceSection = () => {
                 </ul>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         ))}
       </div>
     </section>

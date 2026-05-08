@@ -59,22 +59,19 @@ export const DATA = {
   ],
   services: [
     {
-      title: "Brand Ecosystem Audit",
-      price: "Starting ₹80,000",
-      desc: "A complete diagnostic of your brand narrative, content, and channel architecture. We will identify critical gaps, clear inconsistencies, and uncover massive untapped opportunities.",
-      deliverables: ["Brand voice and tone audit", "Content pillar mapping and gap analysis", "Competitor narrative benchmarking", "Recommendations deck with 90 day action plan"]
+      title: "Ecosystem Architecture Audit",
+      desc: "A surgical diagnostic of your brand's digital infrastructure. I identify narrative dissonance, structural gaps in content scaling, and untapped growth nodes within your existing presence.",
+      deliverables: ["Cross-channel narrative integrity audit", "Content velocity & scaling bottleneck analysis", "Competitor positioning & gap mapping", "Strategic Roadmap: 90-Day Deployment Plan"]
     },
     {
-      title: "Content Engine Setup",
-      price: "Starting ₹1,20,000",
-      desc: "Full design and implementation of a generative content production system utilizing advanced language models and generative visuals. The entire workflow is customized to your exact output needs and team capabilities.",
-      deliverables: ["Custom AI tool stack design", "Workflow automation and SOPs", "Team training via 2 day workshop", "30 day post setup support"]
+      title: "Autonomous Content Systems",
+      desc: "Designing hyper-efficient generative pipelines that integrate with your team. I architect the technological and creative infrastructure needed to multiply output without sacrificing brand soul.",
+      deliverables: ["Neural production stack (AI/ML integration)", "Standard Operating Procedures for high-velocity teams", "Team training for generative implementation", "Workflow scalability blueprint"]
     },
     {
-      title: "Creator Program Architecture",
-      price: "Starting ₹1,50,000",
-      desc: "End to end design of your influencer marketing infrastructure. This covers everything from targeted tier strategy and creator sourcing to sophisticated brief templates and attribution modeling.",
-      deliverables: ["Creator tier strategy and sourcing playbook", "Brief templates and content governance", "UTM and EMV attribution setup", "Monthly performance reporting framework"]
+      title: "Creator Economy Strategy",
+      desc: "Architecting sustainable influencer and community networks that actually convert. I build the infrastructure to source, brief, and measure creators as a predictable revenue engine.",
+      deliverables: ["Multi-tier creator sourcing & strategy playbook", "Brand governance & narrative briefing systems", "Sophisticated EMV & attribution tracking frameworks", "Community-led growth architecture"]
     }
   ],
   process: [

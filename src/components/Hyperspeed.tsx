@@ -110,9 +110,11 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
     const renderer = new THREE.WebGLRenderer({ 
       canvas: canvasRef.current,
       antialias: true,
-      alpha: true 
+      alpha: true,
+      powerPreference: "high-performance",
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
     
     const scene = new THREE.Scene();
     // Use the color from options
@@ -134,7 +136,7 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
     window.addEventListener('resize', resize);
     resize();
 
-    const count = 2000;
+    const count = 1200;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(count * 3 * 2);
     const lineColors = new Float32Array(count * 3 * 2);
@@ -179,6 +181,7 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
     });
 
     const lines = new THREE.LineSegments(geometry, material);
+    lines.frustumCulled = true;
     scene.add(lines);
 
     const applyDistortion = (time: number) => {
@@ -209,8 +212,26 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
     };
 
     let animationId: number;
+    let isVisible = true;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0 }
+    );
+    observer.observe(containerRef.current!);
+
+    let lastFrameTime = 0;
     const animate = (time: number) => {
       animationId = requestAnimationFrame(animate);
+
+      if (!isVisible) return;
+
+      // Throttle to 60fps (16.7ms per frame)
+      const deltaTime = time - lastFrameTime;
+      if (deltaTime < 16) return;
+      lastFrameTime = time;
 
       state.speed += (state.targetSpeed - state.speed) * 0.05;
       state.fov += (state.targetFov - state.fov) * 0.05;
@@ -237,12 +258,13 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
       options.onSlowDown?.();
     };
 
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
-    window.addEventListener('touchstart', handleMouseDown);
-    window.addEventListener('touchend', handleMouseUp);
+    window.addEventListener('mousedown', handleMouseDown, { passive: true });
+    window.addEventListener('mouseup', handleMouseUp, { passive: true });
+    window.addEventListener('touchstart', handleMouseDown, { passive: true });
+    window.addEventListener('touchend', handleMouseUp, { passive: true });
 
     return () => {
+      observer.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);

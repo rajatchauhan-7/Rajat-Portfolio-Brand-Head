@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { DATA } from '../constants';
 import React, { useState } from 'react';
 import { Brand } from '../types';
@@ -7,7 +7,7 @@ export const BrandWall = () => {
   return (
     <section className="py-20 border-y border-white/5 bg-brand-surface/30 backdrop-blur-md overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-6 mb-16">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -17,11 +17,11 @@ export const BrandWall = () => {
           <p className="text-[11px] md:text-[13px] uppercase tracking-[0.7em] text-brand-gold font-black text-center">
             Institutional Brand Partners & Legacy Architecture
           </p>
-        </motion.div>
+        </m.div>
       </div>
       
       <div className="relative w-full overflow-hidden">
-        <motion.div 
+        <m.div 
           animate={{
             x: [0, "-50%"],
           }}
@@ -52,7 +52,7 @@ export const BrandWall = () => {
               )}
             </div>
           ))}
-        </motion.div>
+        </m.div>
 
         {/* Cinematic Side Fades */}
         <div className="absolute inset-y-0 left-0 w-64 bg-gradient-to-r from-brand-bg via-brand-bg/80 to-transparent z-20 pointer-events-none" />
@@ -66,7 +66,7 @@ const BrandIcon = ({ brand }: { brand: Brand }) => {
   const [error, setError] = useState(false);
 
   return (
-    <motion.div
+    <m.div
       whileHover={{ 
         scale: 1.1,
         borderColor: 'rgba(255,184,0,0.4)',
@@ -90,6 +90,6 @@ const BrandIcon = ({ brand }: { brand: Brand }) => {
           {brand.name}
         </span>
       )}
-    </motion.div>
+    </m.div>
   );
 };

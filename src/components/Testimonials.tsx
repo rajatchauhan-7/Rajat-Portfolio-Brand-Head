@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'motion/react';
+import { m, useScroll, useTransform } from 'motion/react';
 import { DATA } from '../constants';
 import { Quote } from 'lucide-react';
 import { useRef } from 'react';
@@ -21,7 +21,7 @@ export const TestimonialsSection = () => {
       </div>
 
       <div className="relative flex w-full">
-        <motion.div 
+        <m.div 
           animate={{
             x: [0, "-50%"],
           }}
@@ -37,7 +37,7 @@ export const TestimonialsSection = () => {
           style={{ width: "max-content" }}
         >
           {duplicatedTestimonials.map((testimonial, i) => (
-            <motion.div
+            <m.div
               key={`${testimonial.id}-${i}`}
               whileHover={{ scale: 1.02 }}
               className="inline-block w-[320px] md:w-[480px] p-8 md:p-14 bg-black/40 backdrop-blur-xl border border-white/5 rounded-[3rem] relative whitespace-normal group/card hover:border-brand-gold/30 transition-all shrink-0"
@@ -61,9 +61,9 @@ export const TestimonialsSection = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
         
         {/* Subtle Side Fades */}
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-brand-bg to-transparent z-20 pointer-events-none" />

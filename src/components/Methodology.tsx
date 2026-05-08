@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { Sparkles, Users, Database, Video } from 'lucide-react';
 
 const methodologies = [
@@ -36,7 +36,7 @@ export const MethodologySection = () => {
           
           <div className="space-y-10">
             {methodologies.map((method, i) => (
-              <motion.div 
+              <m.div 
                 key={method.title}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -58,13 +58,13 @@ export const MethodologySection = () => {
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
 
         <div className="relative">
-          <motion.div 
+          <m.div 
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="aspect-square rounded-[4rem] overflow-hidden border border-white/10 shadow-3xl grayscale hover:grayscale-0 transition-all duration-1000 group relative"
@@ -75,7 +75,7 @@ export const MethodologySection = () => {
                alt="Creative Workspace"
              />
              <div className="absolute inset-0 bg-brand-accent/10 mix-blend-overlay" />
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { DATA } from '../constants';
 import { ArrowRight, Target } from 'lucide-react';
 import { useRef } from 'react';
@@ -9,7 +9,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number; key?
     <div 
       className="w-full relative min-h-[75vh] lg:h-screen max-h-[900px] flex items-center py-12 lg:py-0"
     >
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
         whileHover={{ y: -10, scale: 1.005 }}
         whileInView={{ opacity: 1 }}
@@ -96,12 +96,12 @@ const ProjectCard = ({ project, index }: { project: Project; index: number; key?
                 rel="noopener noreferrer"
                 className="inline-block w-full"
               >
-                <motion.button 
+                <m.button 
                   whileHover={{ scale: 1.01, x: 5 }}
                   className="w-full flex items-center justify-between gap-4 text-brand-text font-bold uppercase text-[9px] tracking-[0.4em] group/btn bg-brand-accent/5 px-6 py-4 rounded-lg hover:bg-brand-gold/10 transition-all duration-300 border border-brand-accent/10"
                 >
                   Project Deep Dive <ArrowRight size={12} className="text-brand-gold group-hover/btn:translate-x-1 transition-transform" />
-                </motion.button>
+                </m.button>
               </a>
             ) : (
               <div className="text-white/10 font-bold uppercase text-[8px] tracking-[0.3em] px-6 py-4 border border-white/5 rounded-lg inline-block w-full text-center italic">
@@ -110,7 +110,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number; key?
             )}
           </div>
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 };
@@ -120,7 +120,7 @@ export const PortfolioSection = () => {
     <section id="work" className="relative py-0 lg:py-0 overflow-visible">
       {/* Portfolio Backdrop Image - Fixed and Subtle */}
       <div className="absolute top-0 inset-x-0 h-screen -z-10 pointer-events-none overflow-hidden">
-        <motion.div 
+        <m.div 
           animate={{ 
             y: [-20, 20, -20],
             rotate: [-1, 1, -1]
@@ -139,11 +139,11 @@ export const PortfolioSection = () => {
             decoding="async"
             className="w-full h-full object-cover grayscale rounded-full will-change-transform"
           />
-        </motion.div>
+        </m.div>
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-end pt-32 pb-40 px-6 lg:px-24 gap-12 relative z-10 max-w-7xl mx-auto">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -160,7 +160,7 @@ export const PortfolioSection = () => {
           <p className="text-xl md:text-2xl text-brand-text/50 font-light leading-relaxed max-w-2xl mx-auto lg:mx-0">
             A surgical breakdown of results. Every strategy is data-backed, every creative choice is intentional.
           </p>
-        </motion.div>
+        </m.div>
       </div>
 
       <div className="relative w-full">
