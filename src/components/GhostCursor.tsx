@@ -238,18 +238,24 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
     const parent = host.parentElement;
     if (!parent) return;
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-      depth: false,
-      stencil: false,
-      powerPreference: 'high-performance',
-      premultipliedAlpha: false,
-      preserveDrawingBuffer: false
-    });
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        depth: false,
+        stencil: false,
+        powerPreference: 'high-performance',
+        premultipliedAlpha: false,
+        preserveDrawingBuffer: false
+      });
 
-    renderer.setClearColor(0x000000, 0);
-    rendererRef.current = renderer;
+      renderer.setClearColor(0x000000, 0);
+      rendererRef.current = renderer;
+    } catch (e) {
+      console.error("WebGL initialization failed for GhostCursor:", e);
+      return;
+    }
 
     renderer.domElement.style.pointerEvents = 'none';
     if (mixBlendMode) {
@@ -295,7 +301,13 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
     const mesh = new THREE.Mesh(geom, material);
     scene.add(mesh);
 
-    const composer = new EffectComposer(renderer);
+    const rt = new THREE.WebGLRenderTarget(1, 1, {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      generateMipmaps: false,
+      format: THREE.RGBAFormat,
+    });
+    const composer = new EffectComposer(renderer, rt);
     composerRef.current = composer;
 
     const renderPass = new RenderPass(scene, camera);
@@ -315,7 +327,7 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
       const cssW = Math.max(1, Math.floor(rect.width));
       const cssH = Math.max(1, Math.floor(rect.height));
 
-      const pixelRatio = Math.min(window.devicePixelRatio, 2);
+      const pixelRatio = Math.min(window.devicePixelRatio, 1.5);
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(cssW, cssH, false);
       composer.setSize(cssW, cssH);

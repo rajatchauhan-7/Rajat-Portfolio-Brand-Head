@@ -107,14 +107,20 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
       targetFov: options.fov || 90,
     };
 
-    const renderer = new THREE.WebGLRenderer({ 
-      canvas: canvasRef.current,
-      antialias: true,
-      alpha: true,
-      powerPreference: "high-performance",
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x000000, 0);
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ 
+        canvas: canvasRef.current,
+        antialias: true,
+        alpha: true,
+        powerPreference: "high-performance",
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.setClearColor(0x000000, 0);
+    } catch (e) {
+      console.error("WebGL initialization failed:", e);
+      return;
+    }
     
     const scene = new THREE.Scene();
     // Use the color from options
