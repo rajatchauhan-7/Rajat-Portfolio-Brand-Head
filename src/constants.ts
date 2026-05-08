@@ -166,7 +166,7 @@ export const DATA = {
         "Deployed highly curated digital social proof walls directly onto property landing pages",
         "Turned satisfied visitors into powerful brand advocates driving organic booking flow"
       ],
-      images: ["https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1024", "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1024"],
+      images: ["https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800", "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800"],
       link: "https://taggbox.com/blog/the-leela-ugc-case-study/"
     },
     {
@@ -492,7 +492,7 @@ export const DATA = {
     { name: "Malandra", logo: "https://taggbox.com/blog/wp-content/uploads/2022/10/Malandra-Logo-1.png" },
     { name: "Shop LC", logo: "https://taggbox.com/blog/wp-content/uploads/2022/03/Shop-LC-logo-1.png" },
     { name: "Reina Olga", logo: "https://www.reinaolga.com/cdn/shop/files/LOGO_RO_BLACK_200x.png" },
-    { name: "TrailFx", logo: "https://www.trailfx.com/images/TrailFx_Logo_Color.png" },
+    { name: "TrailFx", logo: "https://i.postimg.cc/NGr1mcfK/Brass-Roman-Figurine-Chess-Set-Premium-Gifting-Item5-518x-progressive-png.webp" },
     { name: "Minimalist", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Minimalist_Logo.png" },
     { name: "Wakefit", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Wakefit_logo.png/640px-Wakefit_logo.png" }
   ] as Brand[],

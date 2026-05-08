@@ -344,32 +344,34 @@ export const GhostCursor: React.FC<GhostCursorProps> = ({
       const cssH = Math.max(1, Math.floor(rect.height));
 
       const gl = renderer.getContext();
-      const maxRenderBufferSize = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE) || 2048;
+      const maxRes = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE) || 2048;
+      
+      // We want to stay UNDER maxRes in total pixels
+      const finalW = Math.min(cssW, 2048);
+      const finalH = Math.min(cssH, 2048);
       
       let pixelRatio = Math.min(window.devicePixelRatio, 1.5);
       
-      // Limit drawing buffer to prevent crashes on high DPI or 4K+ screens
-      if (cssW * pixelRatio > maxRenderBufferSize) {
-        pixelRatio = maxRenderBufferSize / cssW;
+      // Ensure drawing buffer (finalW * pixelRatio) doesn't exceed hardware limits
+      if (finalW * pixelRatio > maxRes) {
+        pixelRatio = maxRes / finalW;
       }
-      if (cssH * pixelRatio > maxRenderBufferSize) {
-        pixelRatio = Math.min(pixelRatio, maxRenderBufferSize / cssH);
+      if (finalH * pixelRatio > maxRes) {
+        pixelRatio = Math.min(pixelRatio, maxRes / finalH);
       }
 
       renderer.setPixelRatio(pixelRatio);
-      
-      // Force integer sizes and clamp to safe bounds
-      const finalW = Math.max(1, Math.floor(Math.min(cssW, 2048)));
-      const finalH = Math.max(1, Math.floor(Math.min(cssH, 2048)));
-      
       renderer.setSize(finalW, finalH, false);
-      composer.setSize(finalW, finalH);
-
-      const wpx = Math.max(1, Math.floor(finalW * pixelRatio));
-      const hpx = Math.max(1, Math.floor(finalH * pixelRatio));
       
-      material.uniforms.iResolution.value.set(wpx, hpx, 1);
-      material.uniforms.iScale.value = calculateScale(host);
+      // Use pixel dimensions for composer
+      const wpx = Math.floor(finalW * pixelRatio);
+      const hpx = Math.floor(finalH * pixelRatio);
+      composer.setSize(wpx, hpx);
+      
+      if (materialRef.current) {
+        materialRef.current.uniforms.iResolution.value.set(wpx, hpx, 1);
+        materialRef.current.uniforms.iScale.value = calculateScale(host);
+      }
       bloomPass.setSize(wpx, hpx);
     };
 

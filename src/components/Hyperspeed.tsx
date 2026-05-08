@@ -137,24 +137,22 @@ export const Hyperspeed = forwardRef<HTMLDivElement, HyperspeedProps>(({ effectO
       if (width <= 0 || height <= 0) return;
 
       const gl = renderer.getContext();
-      const maxRenderBufferSize = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE) || 2048;
+      const maxRes = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE) || 2048;
       
-      let pixelRatio = Math.min(window.devicePixelRatio, 1.5);
-      
-      // Maintain drawing buffer size within hardware limits
-      if (width * pixelRatio > maxRenderBufferSize) {
-        pixelRatio = maxRenderBufferSize / width;
-      }
-      if (height * pixelRatio > maxRenderBufferSize) {
-        pixelRatio = Math.min(pixelRatio, maxRenderBufferSize / height);
-      }
-
-      renderer.setPixelRatio(pixelRatio);
-
-      // Force integer sizes and clamp to safe bounds
       const finalW = Math.max(1, Math.floor(Math.min(width, 2048)));
       const finalH = Math.max(1, Math.floor(Math.min(height, 2048)));
 
+      let pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+      
+      // Maintain drawing buffer size within hardware limits
+      if (finalW * pixelRatio > maxRes) {
+        pixelRatio = maxRes / finalW;
+      }
+      if (finalH * pixelRatio > maxRes) {
+        pixelRatio = Math.min(pixelRatio, maxRes / finalH);
+      }
+
+      renderer.setPixelRatio(pixelRatio);
       renderer.setSize(finalW, finalH, false);
       camera.aspect = finalW / finalH;
       camera.updateProjectionMatrix();
