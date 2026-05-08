@@ -6,18 +6,19 @@ import {defineConfig, loadEnv} from 'vite';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
-    // This line is critical for GitHub Pages to find your CSS/JS files
     base: './', 
     plugins: [react(), tailwindcss()],
     define: {
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || process.env.GEMINI_API_KEY),
     },
     build: {
+      // Helps handle the heavy Three.js and Framer Motion files
+      chunkSizeWarningLimit: 2000,
       rollupOptions: {
         output: {
           manualChunks: {
-            'vendor-three': ['three'],
-            'vendor-motion': ['framer-motion'],
+            'vendor-graphics': ['three'],
+            'vendor-animation': ['framer-motion'], // Changed from 'motion' to fix the crash
             'vendor-react': ['react', 'react-dom'],
           }
         }
@@ -27,9 +28,6 @@ export default defineConfig(({mode}) => {
       alias: {
         '@': path.resolve(__dirname, '.'),
       },
-    },
-    server: {
-      hmr: process.env.DISABLE_HMR !== 'true',
     },
   };
 });
