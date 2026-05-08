@@ -1,85 +1,52 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import { Navbar, Hero } from './components/Hero';
 import { Suspense, lazy } from 'react';
-import { LazyMotion, domAnimation, m } from 'motion/react';
+import { LazyMotion, domAnimation } from 'framer-motion';
+import { Canvas } from '@react-three/fiber';
+import { Navbar, Hero } from './components/Hero';
 
-const GhostCursor = lazy(() => import('./components/GhostCursor'));
-const AboutSection = lazy(() => import('./components/About').then(m => ({ default: m.AboutSection })));
-const BrandWall = lazy(() => import('./components/BrandWall').then(m => ({ default: m.BrandWall })));
-const ExperienceSection = lazy(() => import('./components/Experience').then(m => ({ default: m.ExperienceSection })));
-const TestimonialsSection = lazy(() => import('./components/Testimonials').then(m => ({ default: m.TestimonialsSection })));
-const CompetenciesSection = lazy(() => import('./components/Competencies').then(m => ({ default: m.CompetenciesSection })));
-const PortfolioSection = lazy(() => import('./components/Portfolio').then(m => ({ default: m.PortfolioSection })));
-const MethodologySection = lazy(() => import('./components/Methodology').then(m => ({ default: m.MethodologySection })));
-const CommunityShowcase = lazy(() => import('./components/CommunityShowcase').then(m => ({ default: m.CommunityShowcase })));
-const AICreativeLab = lazy(() => import('./components/AICreativeLab').then(m => ({ default: m.AICreativeLab })));
-const BlogSection = lazy(() => import('./components/Blog').then(m => ({ default: m.BlogSection })));
-const ProcessSection = lazy(() => import('./components/Process').then(m => ({ default: m.ProcessSection })));
-const ServicesSection = lazy(() => import('./components/Services').then(m => ({ default: m.ServicesSection })));
-const StackSection = lazy(() => import('./components/Stack').then(m => ({ default: m.StackSection })));
-const Footer = lazy(() => import('./components/Footer').then(m => ({ default: m.Footer })));
+// Automatically loads all sections safely
+const Sections = [
+  'AboutSection', 'BrandWall', 'ExperienceSection', 'TestimonialsSection', 
+  'CompetenciesSection', 'PortfolioSection', 'MethodologySection', 
+  'CommunityShowcase', 'AICreativeLab', 'BlogSection', 'ProcessSection', 
+  'ServicesSection', 'StackSection', 'Footer'
+].map(name => lazy(() => import(`./components/${name.replace('Section', '')}`)));
 
 export default function App() {
   return (
     <LazyMotion features={domAnimation} strict>
-      <div className={`relative overflow-x-hidden min-h-screen bg-brand-bg transition-colors duration-700`}>
-        
-        <Suspense fallback={
-          <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
-             <span className="text-brand-gold font-mono text-[10px] uppercase tracking-[0.2em] opacity-30">Loading Visuals...</span>
-          </div>
-        }>
-          <GhostCursor 
-            color="#B8860B" 
-            trailLength={25} 
-            bloomStrength={0.4} 
-            brightness={1.5}
-            zIndex={40}
-          />
-        </Suspense>
-        
+      <div className="relative overflow-x-hidden min-h-screen bg-[#0a0a0a] text-white">
         <Navbar />
         
-        <main>
-          <Hero />
-          
-          <Suspense fallback={<div className="h-96 bg-brand-bg/50 animate-pulse" />}>
-            <AboutSection />
-            <BrandWall />
-            <PortfolioSection />
-            <ProcessSection />
-            <CommunityShowcase />
-            <AICreativeLab />
-            <MethodologySection />
-            <CompetenciesSection />
-            <ExperienceSection />
-            <TestimonialsSection />
-            <BlogSection />
-            <ServicesSection />
-            <StackSection />
-            <Footer />
+        {/* SAFETY SHIELD: This Canvas is the "Anchor" that prevents the GPU crash */}
+        <div className="fixed inset-0 -z-10 pointer-events-none">
+          <Suspense fallback={null}>
+            <Canvas 
+              dpr={[1, 1.2]} 
+              gl={{ antialias: false, powerPreference: "high-performance", alpha: true }}
+            >
+              <color attach="background" args={['#0a0a0a']} />
+              <ambientLight intensity={0.5} />
+            </Canvas>
           </Suspense>
-        </main>
-      
-      {/* Decorative background elements */}
-      <div className="fixed top-0 left-0 w-full h-full pointer-events-none -z-20 overflow-hidden">
-        <m.div 
-          initial={false}
-          className={`absolute top-[10%] left-[5%] w-[40vw] h-[40vw] bg-brand-accent/5 blur-[150px] rounded-full transition-colors duration-700`} 
-        />
-        <m.div 
-          initial={false}
-          className={`absolute bottom-[10%] right-[5%] w-[30vw] h-[30vw] bg-brand-gold/5 blur-[120px] rounded-full transition-colors duration-700`} 
-        />
-      </div>
+        </div>
 
-      {/* Grain texture overlay */}
-      {/* <div className="fixed inset-0 pointer-events-none z-50 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" /> */}
-    </div>
+        <Suspense fallback={<div className="fixed inset-0 bg-black flex items-center justify-center text-gold">Loading...</div>}>
+          <Hero />
+          <main>
+            {Sections.map((Component, i) => (
+              <Suspense key={i} fallback={<div className="h-20" />}>
+                <Component />
+              </Suspense>
+            ))}
+          </main>
+        </Suspense>
+
+        {/* Decorative background blurs - lighter on the system than 3D trails */}
+        <div className="fixed inset-0 pointer-events-none -z-20 overflow-hidden">
+          <div className="absolute top-[10%] left-[5%] w-[40vw] h-[40vw] bg-yellow-900/10 blur-[120px] rounded-full" />
+          <div className="absolute bottom-[10%] right-[5%] w-[30vw] h-[30vw] bg-orange-900/10 blur-[100px] rounded-full" />
+        </div>
+      </div>
     </LazyMotion>
   );
 }
